@@ -4,10 +4,10 @@ const receivingMessage = require('../whatsapp-backend/controllers/messageControl
 const getMessages = require('../whatsapp-backend/controllers/messageController')
 const cors = require('cors'); // Add this line
 require('../whatsapp-backend/DB/Database')       
-
+require("dotenv").config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5001;
 
 
 app.use(cors({
@@ -21,7 +21,7 @@ app.use(cors({
 
 app.use(express.json());
 app.post('/api/sendmessage', sendMessage);
-app.post('/api/receivingMsg', receivingMessage); 
+app.post(process.env.WEBHOOK_ENDPOINT, receivingMessage); 
 app.get('/api/getMessages', getMessages); 
 
 

@@ -49,7 +49,7 @@ const receivingMessage = async (req, res) => {
   const incomingMessage = req.body;
 
   // Verification of incoming webhook (if needed)
-  if (req.query['hub.mode'] && req.query['hub.verify_token'] === process.env.WEBHOOK_VERIFICATION_TOKEN) {
+  if (req.query['hub.mode'] && req.query['hub.verify_token'] === WEBHOOK_VERIFICATION_TOKEN) {
       res.status(200).send(req.query['hub.challenge']);
       return;
   }
