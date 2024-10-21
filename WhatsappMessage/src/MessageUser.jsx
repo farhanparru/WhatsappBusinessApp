@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaSearch, FaPaperclip, FaSmile, FaMicrophone } from 'react-icons/fa';
 import profilePic from '../src/assets/prifile.avif'; // Placeholder profile image
 import axios from 'axios';
@@ -13,8 +13,30 @@ const WhatsAppUI = () => {
     { number: '9072937703', name: 'Farhan', profile: profilePic, status: 'Online', time: '10:00 AM' },
     { number: '7025769330', name: 'Shanifa', profile: profilePic, status: 'Offline', time: '9:30 AM' },
     { number: '8330036507', name: 'Nassef', profile: profilePic, status: 'Online', time: '8:45 AM' },
-    { number: '9895639688', name: 'mahroof', profile: profilePic, status: 'Online', time: '8:45 AM' },
+    { number: '9895639688', name: 'Mahroof', profile: profilePic, status: 'Online', time: '8:45 AM' },
   ];
+
+  // Function to fetch messages for the selected recipient
+  const fetchMessages = async () => {
+    if (!selectedRecipient) return;
+
+    try {
+      const response = await axios.get(`https://demo.invenro.com/api/getMessages`, {
+        params: { recipient_number: selectedRecipient.number },
+      });
+      const fetchedMessages = response.data.messages; // Adjust based on your API response structure
+      setMessages(fetchedMessages);
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+    }
+  };
+
+  // Fetch messages when the selected recipient changes
+  useEffect(() => {
+    fetchMessages();
+  }, [selectedRecipient]);
+
+  
 
   const sendMessage = async () => {
     if (!selectedRecipient || !message.trim()) return;
@@ -30,11 +52,10 @@ const WhatsAppUI = () => {
     setMessage(''); // Clear the message input after sending
 
     try {
-      const response = await axios.post('https://demo.invenro.com//api/sendmessage', {
+      await axios.post('https://demo.invenro.com/api/sendmessage', {
         recipient_number: selectedRecipient.number,
         message_body: message,
       });
-      console.log('Message sent:', response.data);
     } catch (error) {
       console.error('Error sending message:', error);
     }
@@ -105,7 +126,7 @@ const WhatsAppUI = () => {
                   className={`flex ${msg.sender === 'me' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`p-2 rounded-lg max-w-xs ${msg.sender === 'me' ? 'bg-teal-600 text-white' : 'bg-white text-gray-800'} `}
+                    className={`p-2 rounded-lg max-w-xs ${msg.sender === 'me' ? 'bg-teal-600 text-white' : 'bg-white text-gray-800'}`}
                   >
                     <p>{msg.content}</p>
                     <p className="text-xs text-gray-500 text-right">{msg.time}</p>
