@@ -30,7 +30,7 @@ const WhatsAppUI = () => {
     setMessage(''); // Clear the message input after sending
 
     try {
-      const response = await axios.post('https://demo.invenro.com//api/send-message', {
+      const response = await axios.post('https://demo.invenro.com//api/sendmessage', {
         recipient_number: selectedRecipient.number,
         message_body: message,
       });
