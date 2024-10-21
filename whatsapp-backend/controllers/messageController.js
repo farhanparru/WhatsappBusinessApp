@@ -6,6 +6,10 @@ const Message = require('../Model/MessagesDemoModel')
 const { WA_PHONE_NUMBER_ID, CLOUD_API_ACCESS_TOKEN, CLOUD_API_VERSION, WEBHOOK_VERIFICATION_TOKEN } = process.env;
 
 console.log(WA_PHONE_NUMBER_ID, "WA_PHONE_NUMBER_ID");
+console.log(CLOUD_API_ACCESS_TOKEN, "CLOUD_API_ACCESS_TOKEN");
+console.log(WEBHOOK_VERIFICATION_TOKEN, "WEBHOOK_VERIFICATION_TOKEN");
+console.log(CLOUD_API_VERSION, "CLOUD_API_VERSION");
+
 
 async function sendMessage(req, res) {
     const { recipient_number, message_body } = req.body;
@@ -61,7 +65,7 @@ const receivingMessage = async (req, res) => {
               if (messages) {
                   messages.forEach(message => {
                       console.log(`Received message from ${message.from}: ${message.text.body}`);
-
+      
                    
                      const newMessage = new Message({
                       from: message.from,
